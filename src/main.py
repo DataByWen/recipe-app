@@ -1,7 +1,6 @@
 from app_ui import RecipeApp
 import tkinter as tk
 
-
 def main():
     root = tk.Tk()
     app = RecipeApp(root)
