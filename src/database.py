@@ -58,17 +58,27 @@ class DatabaseInsertFetch():
             print("Database connection closed.")  
     
     def insert_recipe(self) -> Union[str, None]:
-        """Inserts a recipe/row into database. Returns error message if any."""
+        """Inserts a recipe/row into database. Returns error message if any. Returns None if successful."""
 
         if not self.entry_name.strip(): # if the user doesn't pass in a recipe name, then we can't add to database
             return "Recipe name is required."
 
         self.cursor = self.connection.cursor()
-        query = "INSERT INTO recipes (name, type, link) VALUES (%s, %s, %s)"
-        values = (self.entry_name, self.combobox_choice, self.entry_link)
+
+        # if the entry name and link is already in the db, we return an error message
+        query = "SELECT 1 FROM recipes WHERE name = %s AND link = %s LIMIT 1"
+        values = (self.entry_name, self.entry_link)
         self.cursor.execute(query, values)
-        self.connection.commit()
-        return None
+        result = self.cursor.fetchone()
+        
+        if result:
+            return "Recipe has already been added! Please add a new recipe."
+        else:
+            query = "INSERT INTO recipes (name, type, link) VALUES (%s, %s, %s)"
+            values = (self.entry_name, self.combobox_choice, self.entry_link)
+            self.cursor.execute(query, values)
+            self.connection.commit()
+            return None
 
     def fetch_recipe(self) -> tuple:
         """Fetches a recipe from database given the recipe type provided by the user and returns (name, type, link)"""
