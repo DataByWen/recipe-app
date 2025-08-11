@@ -9,14 +9,14 @@ class RecipeApp:
     def __init__(self, root): # root is the tk object 
         self.root = root # Composition: "a RecipeApp obj has a Tk obj"
         self.root.title("Recipe App")
-        self.root.geometry("1200x600")
+        self.root.geometry("1200x1000")
 
         self.main_font = font.Font(family="Helvetica", size=20, weight="bold")
         self.big_font = font.Font(family="Helvetica", size=16, weight="bold")
 
         self.create_main_ui()
 
-    def create_main_ui(self):
+    def create_main_ui(self) -> None:
         self.clear_ui() # clear the ui whenever you go back to the main window
 
         style = ttk.Style()
@@ -47,15 +47,18 @@ class RecipeApp:
         self.button_add.pack(side="left", padx=30, pady=50)
 
     # clear (hide) all the widgets in the root window
-    def clear_ui(self):
+    def clear_ui(self) -> None:
+        """Clear (hide) all the widgets in the root window"""
         for widget in self.root.winfo_children(): 
             if widget is not self.result_label:
                 widget.pack_forget()
 
-    def show_random_ui(self):
+    def show_random_ui(self) -> None:
+        """Clears all widgets on the main window and replaces the UI with a new GenerateRecipeUI object"""
         self.clear_ui()
         GenerateRecipeUI(self.root, self.result_label, self) # we pass the RecipeApp object itself to GenerateRecipeUI object since we want to reuse this object when we press on the back button
 
-    def show_add_ui(self):
+    def show_add_ui(self) -> None:
+        """Clears all widgets on the main window and replaces the UI with a new AddRecipeUI object"""
         self.clear_ui()
         AddRecipeUI(self.root, self.result_label, self)
