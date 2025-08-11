@@ -1,5 +1,6 @@
 CREATE TABLE IF NOT EXISTS recipes (
     name VARCHAR(255) PRIMARY KEY,
     type VARCHAR(100),
-    link VARCHAR(255)
+    link VARCHAR(255),
+    notes VARCHAR(255)
 );
